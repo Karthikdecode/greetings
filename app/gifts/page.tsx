@@ -517,13 +517,20 @@
 // }
 
 
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
-const GiftsClient = dynamic(
-  () => import("./GiftsClient"),
-  { ssr: false }
-);
+// const GiftsClient = dynamic(
+//   () => import("./GiftsClient"),
+//   { ssr: false }
+// );
+
+// export default function GiftsPage() {
+//   return <GiftsClient />;
+// }
+
+import GiftsClient from "./GiftsClient";
 
 export default function GiftsPage() {
   return <GiftsClient />;
 }
+
