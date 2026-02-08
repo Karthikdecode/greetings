@@ -1,10 +1,12 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+
 
 // export default function GiftsPage() {
 //   const [activeGift, setActiveGift] = useState<number | null>(null);
