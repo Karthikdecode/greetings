@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function FinalPage() {
-  const [answers, setAnswers] = useState<unknown>(null);
+  const [answers, setAnswers] = useState<{ q1: string; q2: string; q3: string } | null>(null);
 
   useEffect(() => {
     const data = localStorage.getItem("finalAnswers");
