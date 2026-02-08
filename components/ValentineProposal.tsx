@@ -1,197 +1,278 @@
+
+
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
+import { useRouter } from "next/navigation";
 
-const FloatingHeart = ({ delay = 0, size = "text-4xl", position = { top: "10%", left: "10%" } }: { delay?: number; size?: string; position?: React.CSSProperties }) => (
-    <motion.div
-        initial={{ opacity: 0, scale: 0, y: 0 }}
-        animate={{
-            opacity: [0, 0.2, 0.2, 0],
-            scale: [0.5, 1.2, 1.2, 0.5],
-            y: [-20, -100],
-        }}
-        transition={{
-            duration: 4,
-            repeat: Infinity,
-            delay,
-            ease: "easeInOut"
-        }}
-        className="absolute pointer-events-none text-primary"
-        style={position}
-    >
-        <span className={`material-symbols-outlined ${size}`}>favorite</span>
-    </motion.div>
+
+const FloatingHeart = ({ delay = 0, size = "text-4xl", position = {} }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0, y: 0 }}
+    animate={{
+      opacity: [0, 0.3, 0],
+      scale: [0.5, 1.2, 0.5],
+      y: [-20, -120],
+    }}
+    transition={{ duration: 4, repeat: Infinity, delay }}
+    className="absolute pointer-events-none text-primary"
+    style={position}
+  >
+    <span className={`material-symbols-outlined ${size}`}>favorite</span>
+  </motion.div>
 );
 
 export default function ValentineProposal() {
-    const [isAccepted, setIsAccepted] = useState(false);
-    const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
-    const [noCount, setNoCount] = useState(0);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const cardRef = useRef<HTMLDivElement>(null);
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [noPos, setNoPos] = useState({ x: 100, y: 300 });
+  const [noCount, setNoCount] = useState(0);
 
-    const handleYes = () => {
-        setIsAccepted(true);
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ["#ee2b4b", "#ffccd5", "#ffffff"],
-        });
-    };
+  const router = useRouter();
 
-    const handleNoHover = () => {
-        if (cardRef.current) {
-            const cardRect = cardRef.current.getBoundingClientRect();
-            // Restrict movement within the card but increase distance
-            const range = 150;
-            const newX = (Math.random() - 0.5) * range * 2;
-            const newY = (Math.random() - 0.5) * range * 2;
 
-            setNoButtonPos({ x: newX, y: newY });
-            setNoCount(prev => prev + 1);
-        }
-    };
+     const noPhrases = [
+  // 😶 Soft start
+  "No 😶",
+  "Hey! Don’t do that 😳",
+  "Are you sure? 🥺",
+  "Think again cutie 💭",
+  "Last chance 😏",
 
-    const noPhrases = [
-        "No",
-        "Are you sure?",
-        "Really sure?",
-        "Think again!",
-        "Last chance!",
-        "Surely not?",
-        "You might regret this!",
-        "Give it another thought!",
-        "Are you absolutely sure?",
-        "This could be a mistake!",
-        "Have a heart!",
-        "Don't be so cold!",
-        "Change of heart?",
-        "Wouldn't you reconsider?",
-        "Is that your final answer?",
-        "You're breaking my heart ;(",
-    ];
+  // 💔 Emotional phase
+  "That hurt a little 💔",
+  "Why would you say no? 😢",
+  "My heart felt that 🥹",
+  "I thought you liked me 😞",
+  "Ouch… okay 😔",
 
-    return (
-        <div ref={containerRef} className="relative flex h-screen w-full flex-col items-center justify-center p-4 overflow-hidden romantic-gradient font-display">
-            {/* Floating Decoration Elements */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <FloatingHeart delay={0} size="text-4xl" position={{ top: "10%", left: "10%" }} />
-                <FloatingHeart delay={1} size="text-6xl" position={{ bottom: "15%", right: "10%" }} />
-                <FloatingHeart delay={2} size="text-3xl" position={{ top: "30%", right: "20%" }} />
-                <FloatingHeart delay={0.5} size="text-4xl" position={{ bottom: "10%", left: "15%" }} />
-            </div>
+  // 😤 Teasing drama
+  "You’re teasing me now 😤",
+  "Stop playing with my heart 😠❤️",
+  "This is emotional torture 😭",
+  "You enjoy this, don’t you? 😏",
+  "You’re breaking my heart slowly 💔",
 
-            {/* Navigation */}
-            <div className="fixed top-0 w-full max-w-[960px] mx-auto z-10">
-                <header className="flex items-center justify-between px-6 py-3">
-                    <div className="flex items-center gap-2 text-[#181112]">
-                        <div className="size-5 text-primary">
-                            <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                <path clipRule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fillRule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <h2 className="text-base font-bold leading-tight tracking-tight">Special Moments</h2>
-                    </div>
-                    <button className="flex size-8 items-center justify-center rounded-full bg-white shadow-sm text-primary">
-                        <span className="material-symbols-outlined text-lg">favorite</span>
-                    </button>
-                </header>
-            </div>
+  // 💔 Fake breakup mode
+  "Okay… we should talk 😶",
+  "Maybe this won’t work 💔",
+  "I guess I misunderstood us 😔",
+  "I’ll give you space… 😢",
+  "So this is goodbye? 🥀",
 
-            {/* Main Content Container */}
-            <main className="relative z-10 w-full max-w-[500px] flex flex-col items-center gap-4">
-                <AnimatePresence mode="wait">
-                    {!isAccepted ? (
-                        <motion.div
-                            key="ask"
-                            ref={cardRef}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 1.1 }}
-                            className="w-full @container"
-                        >
-                            <div className="flex flex-col items-center justify-center rounded-xl bg-white shadow-xl p-6 border border-primary/5">
-                                {/* Main Illustration/Gif */}
-                                <div className="w-full aspect-square max-w-[200px] mb-4 relative">
-                                    <div className="absolute inset-0 bg-primary/5 rounded-full blur-2xl"></div>
-                                    <div
-                                        className="relative w-full h-full bg-center bg-no-repeat bg-contain"
-                                        style={{ backgroundImage: 'url("/assets/il_1588xN.7566311702_kx8d (1).avif")' }}
-                                    />
-                                </div>
+  // 😭 Sad but cute
+  "I’ll still care about you 🥺",
+  "Even if you say no… 💔",
+  "My heart won’t listen 😞",
+  "I tried my best 😢",
+  "Love is pain sometimes 💔",
 
-                                {/* Proposal Text */}
-                                <div className="text-center mb-6">
-                                    <h1 className="text-[#181112] tracking-tight text-3xl md:text-4xl font-bold leading-tight mb-2">
-                                        Will you be my <span className="text-primary">Valentine?</span>
-                                    </h1>
-                                    <p className="text-[#896168] text-base">
-                                        I've been thinking of asking you this for a while...
-                                    </p>
-                                </div>
+  // 😈 Plot twist – still love
+  "Just kidding 😏❤️",
+  "You can’t escape love 😈",
+  "I know you want to say yes 😍",
+  "Stop lying to yourself 😌",
+  "Say yes already 😘",
 
-                                {/* Button Group */}
-                                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full px-4 relative min-h-[80px]">
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={handleYes}
-                                        className="group flex min-w-[180px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-12 px-8 bg-primary text-white text-lg font-bold transition-all shadow-md z-20"
-                                    >
-                                        <span className="truncate">Yes!</span>
-                                        <span className="material-symbols-outlined">favorite</span>
-                                    </motion.button>
+  // 🫠 Final cute surrender
+  "Fine… I’ll wait 🫠",
+  "Take your time, I’m here 💞",
+  "My heart chose you anyway ❤️",
+  "No matter what, it’s you 💘",
+];
 
-                                    <motion.button
-                                        animate={{ x: noButtonPos.x, y: noButtonPos.y }}
-                                        onMouseEnter={handleNoHover}
-                                        className="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-background-light border border-zinc-200 text-[#181112] text-sm font-medium transition-all hover:bg-zinc-100 whitespace-nowrap"
-                                    >
-                                        <span className="truncate">{noPhrases[Math.min(noCount, noPhrases.length - 1)]}</span>
-                                    </motion.button>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="accepted"
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="text-center flex flex-col items-center gap-4"
-                        >
-                            <div className="w-full aspect-square max-w-[200px] relative">
-                                <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl animate-pulse"></div>
-                                <div
-                                    className="relative w-full h-full bg-center bg-no-repeat bg-contain"
-                                    style={{ backgroundImage: 'url("/assets/il_1588xN.7637972537_n050.avif")' }}
-                                />
-                            </div>
-                            <h1 className="text-4xl md:text-5xl font-bold text-primary animate-bounce">
-                                Yay!!! ❤️
-                            </h1>
-                            <p className="text-xl text-[#896168]">
-                                I knew you'd say yes! I love you!
-                            </p>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
 
-                {/* Footer Message */}
-                {!isAccepted && (
-                    <div className="flex items-center gap-2 text-primary/60 font-medium">
-                        <span className="material-symbols-outlined text-xs">colors_spark</span>
-                        <p className="text-[10px] uppercase tracking-widest">Designed with love</p>
-                        <span className="material-symbols-outlined text-xs">colors_spark</span>
-                    </div>
-                )}
-            </main>
+  const moveNoButton = () => {
+    const padding = 20;
+    const width = 120;
+    const height = 40;
 
-            {/* Decorative Card (Stacked behind effect) */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[480px] bg-primary/5 rounded-xl -rotate-2 -z-10 hidden lg:block"></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[480px] bg-primary/5 rounded-xl rotate-2 -z-10 hidden lg:block"></div>
-        </div>
-    );
+    const maxX = window.innerWidth - width - padding;
+    const maxY = window.innerHeight - height - padding;
+
+    setNoPos({
+      x: Math.random() * maxX,
+      y: Math.random() * maxY,
+    });
+
+    setNoCount((c) => c + 1);
+  };
+
+  const handleYes = () => {
+    setIsAccepted(true);
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      colors: ["#d62546", "#ffd6e0", "#fff"],
+    });
+  };
+
+  const LoveWord = ({
+    text,
+    style,
+  }: {
+    text: string;
+    style: React.CSSProperties;
+  }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: [0.6, 1, 0.6], y: [-5, 5, -5] }}
+      transition={{ duration: 4, repeat: Infinity }}
+      className="fixed text-primary/70 font-medium text-sm pointer-events-none"
+      style={style}
+    >
+      {text}
+    </motion.div>
+  );
+
+  const HeartName = () => (
+    <motion.div
+      initial={{ scale: 0.9 }}
+      animate={{ scale: [0.95, 1.05, 0.95] }}
+      transition={{ duration: 2, repeat: Infinity }}
+      className="absolute top-[18%] text-center z-10"
+    >
+      <h2 className="text-4xl md:text-5xl font-extrabold text-primary drop-shadow-lg">
+        {/* P<span className="text-pink-400">❤️</span>REETHIKA */}
+      </h2>
+     
+    </motion.div>
+  );
+
+  const GiftCard = ({
+  label,
+  route,
+}: {
+  label: string;
+  route: string;
+}) => (
+  <motion.div
+    whileHover={{ scale: 1.1, rotate: 2 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={() => router.push(route)}
+    className="cursor-pointer flex items-center justify-center text-center text-white font-bold"
+    style={{
+      width: 120,
+      height: 120,
+      background: "linear-gradient(135deg, #ff4d6d, #ff85a1)",
+      clipPath:
+        "polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%)",
+    }}
+  >
+    <div>
+      ❤️🎁
+      <div className="text-xs mt-1">{label}</div>
+    </div>
+  </motion.div>
+);
+
+
+  return (
+    <div className="relative flex h-screen items-center justify-center overflow-hidden romantic-gradient">
+      {/* Floating hearts */}
+      <FloatingHeart delay={0} position={{ top: "10%", left: "15%" }} />
+      <FloatingHeart delay={1} position={{ bottom: "15%", right: "20%" }} />
+
+      <AnimatePresence>
+        {!isAccepted ? (
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="heartbeat bg-white rounded-xl shadow-xl p-6 text-center max-w-md z-10"
+          >
+            <h1 className="text-3xl font-bold mb-2">
+              Will you be my <span className="text-primary">Valentine?</span>
+            </h1>
+            <p className="text-gray-500 mb-6">
+              I've been thinking of asking you this for a while…
+            </p>
+
+            <button
+              onClick={handleYes}
+              className="bg-primary text-white px-8 py-3 rounded-full text-lg font-bold shadow-md hover:scale-105 transition"
+            >
+              Yes ❤️
+            </button>
+            <button
+            onClick={moveNoButton} 
+            className="bg-primary text-white px-8 py-3 rounded-full text-lg font-bold shadow-md hover:scale-105 transition">
+              No 😶
+            </button>
+          </motion.div>
+        ) : (
+          // <motion.div
+          //   initial={{ scale: 0.5, opacity: 0 }}
+          //   animate={{ scale: 1, opacity: 1 }}
+          //   className="text-center z-10"
+          // >
+          //   <h1 className="text-5xl font-bold text-primary animate-bounce">
+          //     Yay!!! ❤️
+          //   </h1>
+          //   <p className="text-xl mt-2">I knew you'd say yes 😘</p>
+          // </motion.div>
+
+          <motion.div
+  initial={{ scale: 0.5, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  className="text-center z-10"
+>
+  <h1 className="text-5xl font-bold text-primary mb-2">
+    Yay!!! ❤️
+  </h1>
+  <p className="text-xl mb-8">
+    I knew you'd say yes 😘
+  </p>
+  <p className="text-xl mb-8">
+    Select your gift 🎁 for your memories :)
+  </p>
+
+  {/* 🎁 Gift Grid */}
+  <div className="grid grid-cols-2 md:grid-cols-3 gap-6 justify-center">
+    <GiftCard label="Gift 1" route="/Gifts" />
+    <GiftCard label="Gift 2" route="/gift2" />
+    <GiftCard label="Gift 3" route="/gift3" />
+    <GiftCard label="Gift 4" route="/gift4" />
+    <GiftCard label="Gift 5" route="/gift5" />
+    <GiftCard label="Gift 6" route="/gift6" />
+  </div>
+</motion.div>
+
+        )}
+      </AnimatePresence>
+
+      {/* RUNNING NO BUTTON */}
+      {!isAccepted && (
+        <motion.button
+          onMouseEnter={moveNoButton}
+          animate={{ left: noPos.x, top: noPos.y }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          style={{ position: "fixed", zIndex: 50 }}
+          className="bg-white border px-6 py-2 rounded-full shadow-md text-sm"
+        >
+          {noPhrases[Math.min(noCount, noPhrases.length - 1)]}
+        </motion.button>
+      )}
+      {/* Love Words */}
+      <LoveWord
+        text="You are my favorite feeling 💕"
+        style={{ top: 20, left: 20 }}
+      />
+      <LoveWord
+        text="Forever starts with you 💍"
+        style={{ top: 20, right: 20 }}
+      />
+      <LoveWord
+        text="Only you, always you 💘"
+        style={{ bottom: 20, left: 20 }}
+      />
+      <LoveWord
+        text="My heart chose you ❤️"
+        style={{ bottom: 20, right: 20 }}
+      />
+
+      {/* Name */}
+      <HeartName />
+    </div>
+  );
 }

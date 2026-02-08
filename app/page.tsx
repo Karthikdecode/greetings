@@ -1,9 +1,12 @@
-import ValentineProposal from "@/components/ValentineProposal";
+
+import StartPage from "@/components/StartpagePage";
 
 export default function Home() {
   return (
     <main>
-      <ValentineProposal />
+      <StartPage/>
+     
+      
     </main>
   );
 }

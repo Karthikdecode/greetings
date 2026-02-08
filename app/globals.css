@@ -19,6 +19,19 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.02); }
+  40% { transform: scale(0.98); }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.heartbeat {
+  animation: heartbeat 2s infinite;
+}
+
+
 .romantic-gradient {
   background: radial-gradient(circle at center, #fff5f6 0%, #fdf2f4 100%);
 }
