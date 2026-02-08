@@ -87,14 +87,14 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${beVietnamPro.variable} font-display antialiased`}
-      >
-        {/* 🎵 Global Background Song */}
-        <GlobalAudio />
+  className={`${geistSans.variable} ${geistMono.variable} ${beVietnamPro.variable} font-display antialiased`}
+>
+  {/* 🎵 Global Background Song */}
+  <GlobalAudio />
 
-        {/* 🌸 All Pages */}
-        {children}
-      </body>
+  {children}
+</body>
+
     </html>
   );
 }

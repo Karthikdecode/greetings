@@ -1,17 +1,20 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function GlobalAudio() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    setMounted(true);
+  }, []);
 
-    // Browser autoplay restriction workaround
+  useEffect(() => {
+    if (!mounted || !audioRef.current) return;
+
     const playAudio = () => {
-      audio.play().catch(() => {});
+      audioRef.current?.play().catch(() => {});
       document.removeEventListener("click", playAudio);
     };
 
@@ -20,14 +23,16 @@ export default function GlobalAudio() {
     return () => {
       document.removeEventListener("click", playAudio);
     };
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   return (
     <audio
       ref={audioRef}
-      src="/Kanamani Anbudu.mp3"
+      src="/kanamani-anbodu.mp3"
       loop
-      preload="auto"
+      playsInline
     />
   );
 }
