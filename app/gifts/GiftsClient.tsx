@@ -20,8 +20,12 @@ import { useSearchParams, useRouter } from "next/navigation";
 //   const [showFlowers, setShowFlowers] = useState(false);
 
 export default function GiftsPage() {
-  const searchParams = useSearchParams();
-  const giftFromUrl = searchParams.get("gift");
+  const [giftFromUrl, setGiftFromUrl] = useState<string | null>(null);
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  setGiftFromUrl(params.get("gift"));
+}, []);
 
   const [activeGift, setActiveGift] = useState<number | null>(null);
   const [showFlowers, setShowFlowers] = useState(false);

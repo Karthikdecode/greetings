@@ -528,6 +528,14 @@
 //   return <GiftsClient />;
 // }
 
+// import GiftsClient from "./GiftsClient";
+
+// export default function GiftsPage() {
+//   return <GiftsClient />;
+// }
+
+export const dynamic = "force-dynamic";
+
 import GiftsClient from "./GiftsClient";
 
 export default function GiftsPage() {
