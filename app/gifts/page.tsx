@@ -1,11 +1,9 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import confetti from "canvas-confetti";
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 
 // export default function GiftsPage() {
@@ -19,6 +17,18 @@ export default function GiftsPage() {
   const [activeGift, setActiveGift] = useState<number | null>(null);
   const [showFlowers, setShowFlowers] = useState(false);
 
+  const router = useRouter();
+
+  const heartPositions = useMemo(
+    () =>
+      Array.from({ length: 20 }).map(() => ({
+        x: Math.random() * 800,
+        y: Math.random() * 600,
+        duration: 6 + Math.random() * 5,
+      })),
+    []
+  );
+
   useEffect(() => {
     if (giftFromUrl) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -26,13 +36,20 @@ export default function GiftsPage() {
     }
   }, [giftFromUrl]);
 
-  const triggerFlowers = () => {
+  const triggerFlowers = async () => {
     setShowFlowers(true);
-    confetti({
-      particleCount: 150,
-      spread: 100,
-      colors: ["#ff4d6d", "#ffb3c6", "#fff"],
-    });
+    try {
+      const confetti = (await import("canvas-confetti")).default;
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        colors: ["#ff4d6d", "#ffb3c6", "#fff"],
+      });
+    } catch (e) {
+      // ignore if confetti can't be loaded during SSR/build
+      // eslint-disable-next-line no-console
+      console.warn("confetti import failed", e);
+    }
   };
 
   const PhotoBox = ({ src }: { src: string }) => (
@@ -155,26 +172,13 @@ const Question = ({
   >
     {/* 💛 Floating Hearts Background */}
     <div className="absolute inset-0 pointer-events-none">
-      {[...Array(20)].map((_, i) => (
+      {heartPositions.map((pos, i) => (
         <motion.div
           key={i}
           className="absolute text-pink-400"
-          initial={{
-            // eslint-disable-next-line react-hooks/purity
-            x: Math.random() * 800,
-            // eslint-disable-next-line react-hooks/purity
-            y: Math.random() * 600,
-            opacity: 0.4,
-          }}
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            // eslint-disable-next-line react-hooks/purity
-            duration: 6 + Math.random() * 5,
-            repeat: Infinity,
-          }}
+          initial={{ x: pos.x, y: pos.y, opacity: 0.4 }}
+          animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: pos.duration, repeat: Infinity }}
         >
           ❤️
         </motion.div>
