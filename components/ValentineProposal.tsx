@@ -133,9 +133,7 @@ export default function ValentineProposal() {
       transition={{ duration: 2, repeat: Infinity }}
       className="absolute top-[18%] text-center z-10"
     >
-      <h2 className="text-4xl md:text-5xl font-extrabold text-primary drop-shadow-lg">
-        {/* P<span className="text-pink-400">❤️</span>REETHIKA */}
-      </h2>
+    
      
     </motion.div>
   );
@@ -164,6 +162,7 @@ export default function ValentineProposal() {
       ❤️🎁
       <div className="text-xs mt-1">{label}</div>
     </div>
+    
   </motion.div>
 );
 
@@ -201,16 +200,6 @@ export default function ValentineProposal() {
             </button>
           </motion.div>
         ) : (
-          // <motion.div
-          //   initial={{ scale: 0.5, opacity: 0 }}
-          //   animate={{ scale: 1, opacity: 1 }}
-          //   className="text-center z-10"
-          // >
-          //   <h1 className="text-5xl font-bold text-primary animate-bounce">
-          //     Yay!!! ❤️
-          //   </h1>
-          //   <p className="text-xl mt-2">I knew you'd say yes 😘</p>
-          // </motion.div>
 
           <motion.div
   initial={{ scale: 0.5, opacity: 0 }}
@@ -228,14 +217,24 @@ export default function ValentineProposal() {
   </p>
 
   {/* 🎁 Gift Grid */}
-  <div className="grid grid-cols-2 md:grid-cols-3 gap-6 justify-center">
-    <GiftCard label="Gift 1" route="/Gifts" />
+  {/* <div className="grid grid-cols-2 md:grid-cols-3 gap-6 justify-center">
+    <GiftCard label="Gift 1" route="/GiftsPage" />
     <GiftCard label="Gift 2" route="/gift2" />
     <GiftCard label="Gift 3" route="/gift3" />
     <GiftCard label="Gift 4" route="/gift4" />
     <GiftCard label="Gift 5" route="/gift5" />
     <GiftCard label="Gift 6" route="/gift6" />
-  </div>
+  </div> */}
+
+  <div className="grid grid-cols-2 md:grid-cols-3 gap-6 justify-center">
+  <GiftCard label="Gift 1" route="/gifts?gift=1" />
+  <GiftCard label="Gift 2" route="/gifts?gift=2" />
+  <GiftCard label="Gift 3" route="/gifts?gift=3" />
+  <GiftCard label="Gift 4" route="/gifts?gift=4" />
+  <GiftCard label="Gift 5" route="/gifts?gift=5" />
+  <GiftCard label="Gift 6" route="/gifts?gift=6" />
+</div>
+
 </motion.div>
 
         )}

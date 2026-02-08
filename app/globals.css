@@ -27,6 +27,19 @@
   100% { transform: scale(1); }
 }
 
+.perspective {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+
 .heartbeat {
   animation: heartbeat 2s infinite;
 }

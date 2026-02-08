@@ -19,7 +19,7 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Will You Be My Valentine?",
+  title: "Will You Be My Valentine? ",
   description: "A special proposal for a special someone",
 };
 
